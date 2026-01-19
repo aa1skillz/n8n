@@ -1,10 +1,10 @@
 {
-  "name": "POST Name Processor",
+  "name": "Hello Webhook Test",
   "nodes": [
     {
       "parameters": {
-        "httpMethod": "POST",
-        "path": "name",
+        "httpMethod": "GET",
+        "path": "hello",
         "responseMode": "responseNode"
       },
       "name": "Webhook",
@@ -14,10 +14,21 @@
     },
     {
       "parameters": {
-        "functionCode": "return [\n  {\n    json: {\n      name: $json.name || \"unknown\",\n      length: ($json.name || \"\").length,\n      timestamp: new Date().toISOString()\n    }\n  }\n];"
+        "values": {
+          "string": [
+            {
+              "name": "message",
+              "value": "Hello from n8n 🚀"
+            },
+            {
+              "name": "time",
+              "value": "={{$now}}"
+            }
+          ]
+        }
       },
-      "name": "Process Data",
-      "type": "n8n-nodes-base.function",
+      "name": "Set Response",
+      "type": "n8n-nodes-base.set",
       "typeVersion": 2,
       "position": [450, 300]
     },
@@ -33,9 +44,9 @@
   ],
   "connections": {
     "Webhook": {
-      "main": [[{ "node": "Process Data", "type": "main", "index": 0 }]]
+      "main": [[{ "node": "Set Response", "type": "main", "index": 0 }]]
     },
-    "Process Data": {
+    "Set Response": {
       "main": [[{ "node": "Respond", "type": "main", "index": 0 }]]
     }
   }
